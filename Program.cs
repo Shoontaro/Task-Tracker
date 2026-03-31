@@ -1,4 +1,5 @@
-﻿using Task_Tracker;
+﻿using System;
+using Task_Tracker;
 
 internal class Program
 {
@@ -20,12 +21,37 @@ internal class Program
     private static void TakeCommand()
     {
         string command;
-        command = Console.ReadLine().Trim();
-        if (new TaskValidator(command).IsValidCommand() == true) { 
-        
-        }
 
-       
+        do
+        {
+            command = Console.ReadLine().Trim();
+            TaskValidator valid = new TaskValidator(command);
+            if (valid.IsValidCommand() == true)
+            {
+                Command task = new Command(command);
+
+                task.CreateCommand();
+
+
+            }
+            else
+            {
+                Console.WriteLine("Command is invalid. Please, try a new one\n");
+            }
+        }
+        while (DoNext() == true);
+        Environment.Exit(0);
+    }
+
+    private static bool DoNext()
+    {
+        string doNext = "";
+        do
+        {
+            Console.WriteLine("Do you want another one? Y - yes and N is no");
+            doNext = Console.ReadLine().Trim().ToUpper();
+        } while (doNext != "Y" && doNext != "N");
+        return (doNext == "Y") ? true : false;
     }
 
     private static void Main(string[] args)
